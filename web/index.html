@@ -2,22 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#5A78FF">
     <title>Digital Wellbeing App</title>
     <style>
         html, body, #root {
             height: 100%;
             margin: 0;
             padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
         #root {
             display: flex;
             flex-direction: column;
         }
+        /* Mobile-first responsive design */
+        @media (max-width: 768px) {
+            body {
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
     </style>
 </head>
 <body>
     <div id="root"></div>
-    <script src="./index.bundle.js"></script>
+    <!-- The bundle will be injected by HtmlWebpackPlugin -->
 </body>
 </html>
