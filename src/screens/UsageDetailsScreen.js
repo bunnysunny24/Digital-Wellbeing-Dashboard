@@ -86,7 +86,7 @@ const UsageDetailsScreen = ({ navigation }) => {
   
   const getTotalScreenTime = () => {
     const totalHours = usageData.reduce((total, day) => total + day.hours, 0);
-    return totalHours;
+    return totalHours.toFixed(1);
   };
   
   const navigateTo = (screen) => {
