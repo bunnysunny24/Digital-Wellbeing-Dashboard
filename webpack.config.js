@@ -9,8 +9,8 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'web/dist'),
-    publicPath: '/',
-    filename: '[name].[contenthash].bundle.js',
+    publicPath: process.env.NODE_ENV === 'production' ? '/digital-wellbeing-app/' : '/',
+    filename: '[name].bundle.js',
   },
   module: {
     rules: [
@@ -55,34 +55,17 @@ module.exports = {
       'react-native$': 'react-native-web',
       'react-native-vector-icons': 'react-native-vector-icons/dist',
       '@react-native-async-storage/async-storage': path.resolve(__dirname, 'web/AsyncStorageWeb.js'),
-    },
-    fallback: {
-      'path': require.resolve('path-browserify'),
-      'fs': false,
-      'crypto': require.resolve('crypto-browserify'),
-      'stream': require.resolve('stream-browserify'),
-      'os': require.resolve('os-browserify/browser'),
-      'process': require.resolve('process/browser')
     }
   },
   plugins: [
     new webpack.DefinePlugin({
       __DEV__: process.env.NODE_ENV !== 'production',
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
-      'exports': '(typeof window !== "undefined" ? window : {})',
-      'global': {},
-      'module': {},
     }),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'web/index.html'),
       filename: 'index.html',
       inject: true,
-      favicon: path.join(__dirname, 'web/favicon.ico'),
-    }),
-    new webpack.ProvidePlugin({
-      process: 'process/browser',
-      Buffer: ['buffer', 'Buffer'],
-      exports: 'exports-loader?exports=module.exports',
     }),
   ],
   devServer: {

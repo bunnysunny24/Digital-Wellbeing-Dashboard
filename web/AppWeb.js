@@ -15,10 +15,24 @@ const Stack = createStackNavigator();
 
 // Web-specific wrapper for the app
 const AppWeb = () => {
+  // For GitHub Pages deployment
+  const linking = {
+    prefixes: [],
+    config: {
+      screens: {
+        Dashboard: '',
+        UsageDetails: 'usage',
+        FocusMode: 'focus',
+        Goals: 'goals',
+        Settings: 'settings',
+      },
+    },
+  };
+
   return (
     <SafeAreaProvider>
       <ThemeProvider>
-        <NavigationContainer>
+        <NavigationContainer linking={linking}>
           <Stack.Navigator
             initialRouteName="Dashboard"
             screenOptions={{
