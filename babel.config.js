@@ -1,7 +1,6 @@
 module.exports = {
-  presets: ['@react-native/babel-preset'],
+  presets: ['module:@react-native/babel-preset'],
   plugins: [
-    // Add support for web platform
-    'react-native-web'
+    'babel-plugin-react-native-web',
   ],
 };

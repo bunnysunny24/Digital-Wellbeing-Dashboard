@@ -20,7 +20,7 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             presets: ['@react-native/babel-preset'],
-            plugins: ['react-native-web'],
+            plugins: ['babel-plugin-react-native-web'],
           },
         },
       },
@@ -58,6 +58,7 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       __DEV__: process.env.NODE_ENV !== 'production',
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
     }),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'web/index.html'),
@@ -71,6 +72,7 @@ module.exports = {
     },
     historyApiFallback: true,
     port: 8080,
+    host: '0.0.0.0', // Allow access from other devices on network
     open: true,
     hot: true,
   },
