@@ -3,14 +3,14 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  mode: 'development',
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: {
     index: './web/index.js',
   },
   output: {
     path: path.resolve(__dirname, 'web/dist'),
     publicPath: '/',
-    filename: '[name].bundle.js',
+    filename: '[name].[contenthash].bundle.js',
   },
   module: {
     rules: [
@@ -67,8 +67,8 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      __DEV__: true,
-      'process.env.NODE_ENV': JSON.stringify('development'),
+      __DEV__: process.env.NODE_ENV !== 'production',
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
       'exports': '(typeof window !== "undefined" ? window : {})',
       'global': {},
       'module': {},
@@ -77,6 +77,7 @@ module.exports = {
       template: path.join(__dirname, 'web/index.html'),
       filename: 'index.html',
       inject: true,
+      favicon: path.join(__dirname, 'web/favicon.ico'),
     }),
     new webpack.ProvidePlugin({
       process: 'process/browser',

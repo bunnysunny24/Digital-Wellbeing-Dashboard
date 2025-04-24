@@ -9,7 +9,8 @@
     "start": "react-native start",
     "test": "jest",
     "web": "webpack-dev-server --config webpack.config.js",
-    "build-web": "webpack --config webpack.config.js --mode=production"
+    "build-web": "webpack --config webpack.config.js --mode=production",
+    "vercel-build": "webpack --config webpack.config.js --mode=production"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.1.2",
