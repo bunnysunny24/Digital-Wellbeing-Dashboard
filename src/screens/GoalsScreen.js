@@ -10,6 +10,7 @@ import {
   Modal,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useTheme } from '../context/ThemeContext';
 
 // Import components
 import Header from '../components/common/Header';
@@ -18,6 +19,7 @@ import GoalForm from '../components/goals/GoalForm';
 import BottomNavigation from '../components/common/BottomNavigation';
 
 const GoalsScreen = ({ navigation }) => {
+  const { theme } = useTheme();
   const [goals, setGoals] = useState([]);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [selectedGoal, setSelectedGoal] = useState(null);
@@ -90,13 +92,24 @@ const GoalsScreen = ({ navigation }) => {
   };
   
   const navigateTo = (screen) => {
-    // In a real app, you would use proper navigation
-    console.log(`Navigate to ${screen}`);
+    // Map tab keys to screen names
+    const screenMapping = {
+      'dashboard': 'Dashboard',
+      'usage': 'UsageDetails',
+      'focus': 'FocusMode',
+      'goals': 'Goals',
+      'settings': 'Settings'
+    };
+    
+    // Navigate to the correct screen
+    if (screenMapping[screen]) {
+      navigation.navigate(screenMapping[screen]);
+    }
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <StatusBar backgroundColor={theme.colors.card} barStyle={theme.colors.statusBar} />
       
       <Header 
         title="Your Goals" 
@@ -122,16 +135,16 @@ const GoalsScreen = ({ navigation }) => {
           />
         ) : (
           <View style={styles.emptyState}>
-            <Icon name="flag-outline" size={64} color="#CCCCCC" />
-            <Text style={styles.emptyStateText}>No goals set</Text>
-            <Text style={styles.emptyStateSubText}>
+            <Icon name="flag-outline" size={64} color={theme.colors.textTertiary} />
+            <Text style={[styles.emptyStateText, { color: theme.colors.text }]}>No goals set</Text>
+            <Text style={[styles.emptyStateSubText, { color: theme.colors.textSecondary }]}>
               Set goals to manage your digital wellbeing
             </Text>
           </View>
         )}
         
         <TouchableOpacity
-          style={styles.addButton}
+          style={[styles.addButton, { backgroundColor: theme.colors.accent }]}
           onPress={handleAddGoal}
         >
           <Icon name="plus" size={24} color="#FFFFFF" />
@@ -146,8 +159,8 @@ const GoalsScreen = ({ navigation }) => {
         onRequestClose={() => setIsFormVisible(false)}
       >
         <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>
+          <View style={[styles.modalContent, { backgroundColor: theme.colors.card }]}>
+            <Text style={[styles.modalTitle, { color: theme.colors.text }]}>
               {selectedGoal ? 'Edit Goal' : 'New Goal'}
             </Text>
             
