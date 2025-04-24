@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   StatusBar,
 } from 'react-native';
+import { useTheme } from '../context/ThemeContext';
 
 // Import components
 import Header from '../components/common/Header';
@@ -17,6 +18,7 @@ import FocusModeSettings from '../components/focus/FocusModeSettings';
 import BottomNavigation from '../components/common/BottomNavigation';
 
 const FocusModeScreen = ({ navigation }) => {
+  const { theme } = useTheme();
   const [activeTab, setActiveTab] = useState('timer');
   const [timerDuration, setTimerDuration] = useState(25); // minutes
   
@@ -62,51 +64,68 @@ const FocusModeScreen = ({ navigation }) => {
   };
   
   const navigateTo = (screen) => {
-    // In a real app, you would use proper navigation
-    console.log(`Navigate to ${screen}`);
+    // Map tab keys to screen names
+    const screenMapping = {
+      'dashboard': 'Dashboard',
+      'usage': 'UsageDetails',
+      'focus': 'FocusMode',
+      'goals': 'Goals',
+      'settings': 'Settings'
+    };
+    
+    // Navigate to the correct screen
+    if (screenMapping[screen]) {
+      navigation.navigate(screenMapping[screen]);
+    }
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <StatusBar backgroundColor={theme.colors.card} barStyle={theme.colors.statusBar} />
       
       <Header 
         title="Focus Mode" 
         onBack={() => navigation.goBack()} 
       />
       
-      <View style={styles.tabs}>
+      <View style={[styles.tabs, { 
+        backgroundColor: theme.colors.card,
+        borderBottomColor: theme.colors.border 
+      }]}>
         <TouchableOpacity
-          style={[styles.tab, activeTab === 'timer' && styles.activeTab]}
+          style={[styles.tab, activeTab === 'timer' && [styles.activeTab, { borderBottomColor: theme.colors.accent }]]}
           onPress={() => setActiveTab('timer')}
         >
           <Text style={[
             styles.tabText, 
-            activeTab === 'timer' && styles.activeTabText
+            { color: theme.colors.textSecondary },
+            activeTab === 'timer' && { color: theme.colors.accent }
           ]}>
             Timer
           </Text>
         </TouchableOpacity>
         
         <TouchableOpacity
-          style={[styles.tab, activeTab === 'schedule' && styles.activeTab]}
+          style={[styles.tab, activeTab === 'schedule' && [styles.activeTab, { borderBottomColor: theme.colors.accent }]]}
           onPress={() => setActiveTab('schedule')}
         >
           <Text style={[
             styles.tabText, 
-            activeTab === 'schedule' && styles.activeTabText
+            { color: theme.colors.textSecondary },
+            activeTab === 'schedule' && { color: theme.colors.accent }
           ]}>
             Schedule
           </Text>
         </TouchableOpacity>
         
         <TouchableOpacity
-          style={[styles.tab, activeTab === 'settings' && styles.activeTab]}
+          style={[styles.tab, activeTab === 'settings' && [styles.activeTab, { borderBottomColor: theme.colors.accent }]]}
           onPress={() => setActiveTab('settings')}
         >
           <Text style={[
             styles.tabText, 
-            activeTab === 'settings' && styles.activeTabText
+            { color: theme.colors.textSecondary },
+            activeTab === 'settings' && { color: theme.colors.accent }
           ]}>
             Settings
           </Text>
