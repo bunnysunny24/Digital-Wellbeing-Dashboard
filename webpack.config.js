@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: {
-    index: './web/index.js',
+    index: ['./web/polyfills.js', './web/index.js'], // Include polyfills before main code
   },
   output: {
     path: path.resolve(__dirname, 'web/dist'),
@@ -55,6 +55,14 @@ module.exports = {
       'react-native$': 'react-native-web',
       'react-native-vector-icons': 'react-native-vector-icons/dist',
       '@react-native-async-storage/async-storage': path.resolve(__dirname, 'web/AsyncStorageWeb.js'),
+    },
+    fallback: {
+      'path': require.resolve('path-browserify'),
+      'fs': false,
+      'crypto': require.resolve('crypto-browserify'),
+      'stream': require.resolve('stream-browserify'),
+      'os': require.resolve('os-browserify/browser'),
+      'process': require.resolve('process/browser')
     }
   },
   plugins: [
@@ -66,6 +74,13 @@ module.exports = {
       template: path.join(__dirname, 'web/index.html'),
       filename: 'index.html',
       inject: true,
+    }),
+    // Add ProvidePlugin to provide CommonJS globals
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+      Buffer: ['buffer', 'Buffer'],
+      exports: 'exports-loader?type=commonjs&exports=module.exports',
+      module: 'module-loader?type=commonjs',
     }),
   ],
   devServer: {
