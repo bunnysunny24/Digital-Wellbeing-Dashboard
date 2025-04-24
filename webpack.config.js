@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -58,11 +59,19 @@ module.exports = {
     new webpack.DefinePlugin({
       __DEV__: process.env.NODE_ENV !== 'production',
     }),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, 'web/index.html'),
+      filename: 'index.html',
+      inject: true,
+    }),
   ],
   devServer: {
-    contentBase: path.join(__dirname, 'web'),
+    static: {
+      directory: path.join(__dirname, 'web'),
+    },
     historyApiFallback: true,
     port: 8080,
     open: true,
+    hot: true,
   },
 };
