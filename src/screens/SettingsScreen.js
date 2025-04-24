@@ -11,6 +11,7 @@ import {
   Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useTheme } from '../context/ThemeContext';
 
 // Import components
 import Header from '../components/common/Header';
@@ -18,8 +19,8 @@ import ThemeToggle from '../components/common/ThemeToggle';
 import BottomNavigation from '../components/common/BottomNavigation';
 
 const SettingsScreen = ({ navigation }) => {
+  const { theme, toggleTheme, isDark } = useTheme();
   const [settings, setSettings] = useState({
-    darkMode: false,
     notificationsEnabled: true,
     usageReminders: true,
     goalAlerts: true,
@@ -36,8 +37,17 @@ const SettingsScreen = ({ navigation }) => {
   };
   
   const navigateTo = (screen) => {
-    // In a real app, you would use proper navigation
-    console.log(`Navigate to ${screen}`);
+    const screenMapping = {
+      'dashboard': 'Dashboard',
+      'usage': 'UsageDetails',
+      'focus': 'FocusMode',
+      'goals': 'Goals',
+      'settings': 'Settings'
+    };
+    
+    if (screenMapping[screen]) {
+      navigation.navigate(screenMapping[screen]);
+    }
   };
   
   const showExportConfirmation = () => {
@@ -67,8 +77,8 @@ const SettingsScreen = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <StatusBar backgroundColor={theme.colors.card} barStyle={theme.colors.statusBar} />
       
       <Header 
         title="Settings" 
@@ -77,86 +87,92 @@ const SettingsScreen = ({ navigation }) => {
       
       <ScrollView style={styles.content}>
         {/* Appearance */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Appearance</Text>
+        <View style={[styles.section, { 
+          backgroundColor: theme.colors.card,
+          shadowColor: theme.colors.shadow
+        }]}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Appearance</Text>
           
-          <View style={styles.settingItem}>
+          <View style={[styles.settingItem, { borderBottomColor: theme.colors.border }]}>
             <View style={styles.settingInfo}>
-              <Text style={styles.settingTitle}>Dark Mode</Text>
-              <Text style={styles.settingDescription}>
+              <Text style={[styles.settingTitle, { color: theme.colors.text }]}>Dark Mode</Text>
+              <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>
                 Switch between light and dark theme
               </Text>
             </View>
             <ThemeToggle 
-              isDarkMode={settings.darkMode} 
-              onToggle={() => toggleSetting('darkMode')}
+              isDarkMode={isDark} 
+              onToggle={toggleTheme}
             />
           </View>
         </View>
         
         {/* Notifications */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Notifications</Text>
+        <View style={[styles.section, { 
+          backgroundColor: theme.colors.card,
+          shadowColor: theme.colors.shadow
+        }]}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Notifications</Text>
           
-          <View style={styles.settingItem}>
+          <View style={[styles.settingItem, { borderBottomColor: theme.colors.border }]}>
             <View style={styles.settingInfo}>
-              <Text style={styles.settingTitle}>Enable Notifications</Text>
-              <Text style={styles.settingDescription}>
+              <Text style={[styles.settingTitle, { color: theme.colors.text }]}>Enable Notifications</Text>
+              <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>
                 Receive notifications for goals and usage updates
               </Text>
             </View>
             <Switch
               value={settings.notificationsEnabled}
               onValueChange={() => toggleSetting('notificationsEnabled')}
-              trackColor={{ false: '#E0E0E0', true: 'rgba(90, 120, 255, 0.3)' }}
-              thumbColor={settings.notificationsEnabled ? '#5A78FF' : '#F5F5F5'}
+              trackColor={{ false: theme.colors.border, true: `${theme.colors.accent}50` }}
+              thumbColor={settings.notificationsEnabled ? theme.colors.accent : '#F5F5F5'}
             />
           </View>
           
           {settings.notificationsEnabled && (
             <>
-              <View style={styles.settingItem}>
+              <View style={[styles.settingItem, { borderBottomColor: theme.colors.border }]}>
                 <View style={styles.settingInfo}>
-                  <Text style={styles.settingTitle}>Usage Reminders</Text>
-                  <Text style={styles.settingDescription}>
+                  <Text style={[styles.settingTitle, { color: theme.colors.text }]}>Usage Reminders</Text>
+                  <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>
                     Get notified when you approach your daily limits
                   </Text>
                 </View>
                 <Switch
                   value={settings.usageReminders}
                   onValueChange={() => toggleSetting('usageReminders')}
-                  trackColor={{ false: '#E0E0E0', true: 'rgba(90, 120, 255, 0.3)' }}
-                  thumbColor={settings.usageReminders ? '#5A78FF' : '#F5F5F5'}
+                  trackColor={{ false: theme.colors.border, true: `${theme.colors.accent}50` }}
+                  thumbColor={settings.usageReminders ? theme.colors.accent : '#F5F5F5'}
                 />
               </View>
               
-              <View style={styles.settingItem}>
+              <View style={[styles.settingItem, { borderBottomColor: theme.colors.border }]}>
                 <View style={styles.settingInfo}>
-                  <Text style={styles.settingTitle}>Goal Alerts</Text>
-                  <Text style={styles.settingDescription}>
+                  <Text style={[styles.settingTitle, { color: theme.colors.text }]}>Goal Alerts</Text>
+                  <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>
                     Receive notifications about your goal progress
                   </Text>
                 </View>
                 <Switch
                   value={settings.goalAlerts}
                   onValueChange={() => toggleSetting('goalAlerts')}
-                  trackColor={{ false: '#E0E0E0', true: 'rgba(90, 120, 255, 0.3)' }}
-                  thumbColor={settings.goalAlerts ? '#5A78FF' : '#F5F5F5'}
+                  trackColor={{ false: theme.colors.border, true: `${theme.colors.accent}50` }}
+                  thumbColor={settings.goalAlerts ? theme.colors.accent : '#F5F5F5'}
                 />
               </View>
               
-              <View style={styles.settingItem}>
+              <View style={[styles.settingItem, { borderBottomColor: theme.colors.border }]}>
                 <View style={styles.settingInfo}>
-                  <Text style={styles.settingTitle}>Weekly Report</Text>
-                  <Text style={styles.settingDescription}>
+                  <Text style={[styles.settingTitle, { color: theme.colors.text }]}>Weekly Report</Text>
+                  <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>
                     Receive a weekly summary of your digital wellbeing
                   </Text>
                 </View>
                 <Switch
                   value={settings.weeklyReport}
                   onValueChange={() => toggleSetting('weeklyReport')}
-                  trackColor={{ false: '#E0E0E0', true: 'rgba(90, 120, 255, 0.3)' }}
-                  thumbColor={settings.weeklyReport ? '#5A78FF' : '#F5F5F5'}
+                  trackColor={{ false: theme.colors.border, true: `${theme.colors.accent}50` }}
+                  thumbColor={settings.weeklyReport ? theme.colors.accent : '#F5F5F5'}
                 />
               </View>
             </>
@@ -164,87 +180,96 @@ const SettingsScreen = ({ navigation }) => {
         </View>
         
         {/* Privacy */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Privacy</Text>
+        <View style={[styles.section, { 
+          backgroundColor: theme.colors.card,
+          shadowColor: theme.colors.shadow
+        }]}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Privacy</Text>
           
-          <View style={styles.settingItem}>
+          <View style={[styles.settingItem, { borderBottomColor: theme.colors.border }]}>
             <View style={styles.settingInfo}>
-              <Text style={styles.settingTitle}>Screen Time Tracking</Text>
-              <Text style={styles.settingDescription}>
+              <Text style={[styles.settingTitle, { color: theme.colors.text }]}>Screen Time Tracking</Text>
+              <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>
                 Track how you use your device and apps
               </Text>
             </View>
             <Switch
               value={settings.screenTimeTrackingEnabled}
               onValueChange={() => toggleSetting('screenTimeTrackingEnabled')}
-              trackColor={{ false: '#E0E0E0', true: 'rgba(90, 120, 255, 0.3)' }}
-              thumbColor={settings.screenTimeTrackingEnabled ? '#5A78FF' : '#F5F5F5'}
+              trackColor={{ false: theme.colors.border, true: `${theme.colors.accent}50` }}
+              thumbColor={settings.screenTimeTrackingEnabled ? theme.colors.accent : '#F5F5F5'}
             />
           </View>
           
-          <View style={styles.settingItem}>
+          <View style={[styles.settingItem, { borderBottomColor: theme.colors.border }]}>
             <View style={styles.settingInfo}>
-              <Text style={styles.settingTitle}>Data Collection</Text>
-              <Text style={styles.settingDescription}>
+              <Text style={[styles.settingTitle, { color: theme.colors.text }]}>Data Collection</Text>
+              <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>
                 Collect anonymous usage data to improve the app
               </Text>
             </View>
             <Switch
               value={settings.dataCollection}
               onValueChange={() => toggleSetting('dataCollection')}
-              trackColor={{ false: '#E0E0E0', true: 'rgba(90, 120, 255, 0.3)' }}
-              thumbColor={settings.dataCollection ? '#5A78FF' : '#F5F5F5'}
+              trackColor={{ false: theme.colors.border, true: `${theme.colors.accent}50` }}
+              thumbColor={settings.dataCollection ? theme.colors.accent : '#F5F5F5'}
             />
           </View>
         </View>
         
         {/* Data Management */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Data Management</Text>
+        <View style={[styles.section, { 
+          backgroundColor: theme.colors.card,
+          shadowColor: theme.colors.shadow
+        }]}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Data Management</Text>
           
           <TouchableOpacity 
-            style={styles.actionButton}
+            style={[styles.actionButton, { borderBottomColor: theme.colors.border }]}
             onPress={showExportConfirmation}
           >
-            <Icon name="export" size={24} color="#5A78FF" />
-            <Text style={styles.actionText}>Export Your Data</Text>
+            <Icon name="export" size={24} color={theme.colors.accent} />
+            <Text style={[styles.actionText, { color: theme.colors.accent }]}>Export Your Data</Text>
           </TouchableOpacity>
           
           <TouchableOpacity 
-            style={[styles.actionButton, styles.deleteButton]}
+            style={styles.actionButton}
             onPress={showDeleteConfirmation}
           >
-            <Icon name="delete-outline" size={24} color="#FF6B6B" />
-            <Text style={styles.deleteText}>Delete All Data</Text>
+            <Icon name="delete-outline" size={24} color={theme.colors.error} />
+            <Text style={[styles.deleteText, { color: theme.colors.error }]}>Delete All Data</Text>
           </TouchableOpacity>
         </View>
         
         {/* About */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>About</Text>
+        <View style={[styles.section, { 
+          backgroundColor: theme.colors.card,
+          shadowColor: theme.colors.shadow
+        }]}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>About</Text>
           
-          <TouchableOpacity style={styles.linkItem}>
-            <Text style={styles.linkText}>Privacy Policy</Text>
-            <Icon name="chevron-right" size={20} color="#888" />
+          <TouchableOpacity style={[styles.linkItem, { borderBottomColor: theme.colors.border }]}>
+            <Text style={[styles.linkText, { color: theme.colors.text }]}>Privacy Policy</Text>
+            <Icon name="chevron-right" size={20} color={theme.colors.textTertiary} />
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={[styles.linkItem, { borderBottomColor: theme.colors.border }]}>
+            <Text style={[styles.linkText, { color: theme.colors.text }]}>Terms of Service</Text>
+            <Icon name="chevron-right" size={20} color={theme.colors.textTertiary} />
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={[styles.linkItem, { borderBottomColor: theme.colors.border }]}>
+            <Text style={[styles.linkText, { color: theme.colors.text }]}>Send Feedback</Text>
+            <Icon name="chevron-right" size={20} color={theme.colors.textTertiary} />
           </TouchableOpacity>
           
           <TouchableOpacity style={styles.linkItem}>
-            <Text style={styles.linkText}>Terms of Service</Text>
-            <Icon name="chevron-right" size={20} color="#888" />
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.linkItem}>
-            <Text style={styles.linkText}>Send Feedback</Text>
-            <Icon name="chevron-right" size={20} color="#888" />
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.linkItem}>
-            <Text style={styles.linkText}>Rate the App</Text>
-            <Icon name="chevron-right" size={20} color="#888" />
+            <Text style={[styles.linkText, { color: theme.colors.text }]}>Rate the App</Text>
+            <Icon name="chevron-right" size={20} color={theme.colors.textTertiary} />
           </TouchableOpacity>
         </View>
         
-        <Text style={styles.versionText}>Version 1.0.0</Text>
+        <Text style={[styles.versionText, { color: theme.colors.textTertiary }]}>Version 1.0.0</Text>
       </ScrollView>
       
       <BottomNavigation 
@@ -258,18 +283,15 @@ const SettingsScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F7',
   },
   content: {
     flex: 1,
     paddingHorizontal: 16,
   },
   section: {
-    backgroundColor: '#FFFFFF',
     borderRadius: 12,
     padding: 16,
     marginVertical: 10,
-    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 1,
@@ -281,7 +303,6 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#333',
     marginBottom: 16,
   },
   settingItem: {
@@ -290,7 +311,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0',
   },
   settingInfo: {
     flex: 1,
@@ -299,34 +319,26 @@ const styles = StyleSheet.create({
   settingTitle: {
     fontSize: 16,
     fontWeight: '500',
-    color: '#333',
     marginBottom: 4,
   },
   settingDescription: {
     fontSize: 14,
-    color: '#777',
   },
   actionButton: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0',
-  },
-  deleteButton: {
-    borderBottomWidth: 0,
   },
   actionText: {
     marginLeft: 12,
     fontSize: 16,
     fontWeight: '500',
-    color: '#5A78FF',
   },
   deleteText: {
     marginLeft: 12,
     fontSize: 16,
     fontWeight: '500',
-    color: '#FF6B6B',
   },
   linkItem: {
     flexDirection: 'row',
@@ -334,16 +346,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0',
   },
   linkText: {
     fontSize: 16,
-    color: '#333',
   },
   versionText: {
     textAlign: 'center',
     fontSize: 14,
-    color: '#888',
     marginVertical: 20,
   },
 });
