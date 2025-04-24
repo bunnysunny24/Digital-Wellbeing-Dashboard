@@ -51,8 +51,19 @@ const DashboardScreen = ({ navigation }) => {
   }, []);
 
   const navigateTo = (screen) => {
-    // In a real app, you would use proper navigation
-    console.log(`Navigate to ${screen}`);
+    // Map tab keys to screen names
+    const screenMapping = {
+      'dashboard': 'Dashboard',
+      'usage': 'UsageDetails',
+      'focus': 'FocusMode',
+      'goals': 'Goals',
+      'settings': 'Settings'
+    };
+    
+    // Navigate to the correct screen
+    if (screenMapping[screen]) {
+      navigation.navigate(screenMapping[screen]);
+    }
   };
 
   return (
