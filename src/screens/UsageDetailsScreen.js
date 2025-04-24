@@ -9,6 +9,7 @@ import {
   StatusBar,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useTheme } from '../context/ThemeContext';
 
 // Import components
 import Header from '../components/common/Header';
@@ -19,6 +20,7 @@ import BottomNavigation from '../components/common/BottomNavigation';
 const FILTER_OPTIONS = ['Daily', 'Weekly', 'Monthly'];
 
 const UsageDetailsScreen = ({ navigation }) => {
+  const { theme } = useTheme();
   const [selectedFilter, setSelectedFilter] = useState('Weekly');
   const [usageData, setUsageData] = useState([]);
   const [appList, setAppList] = useState([]);
@@ -90,13 +92,24 @@ const UsageDetailsScreen = ({ navigation }) => {
   };
   
   const navigateTo = (screen) => {
-    // In a real app, you would use proper navigation
-    console.log(`Navigate to ${screen}`);
+    // Map tab keys to screen names
+    const screenMapping = {
+      'dashboard': 'Dashboard',
+      'usage': 'UsageDetails',
+      'focus': 'FocusMode',
+      'goals': 'Goals',
+      'settings': 'Settings'
+    };
+    
+    // Navigate to the correct screen
+    if (screenMapping[screen]) {
+      navigation.navigate(screenMapping[screen]);
+    }
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <StatusBar backgroundColor={theme.colors.card} barStyle={theme.colors.statusBar} />
       
       <Header 
         title="Usage Details" 
@@ -104,19 +117,20 @@ const UsageDetailsScreen = ({ navigation }) => {
       />
       
       <ScrollView style={styles.scrollView}>
-        <View style={styles.filterContainer}>
+        <View style={[styles.filterContainer, { backgroundColor: theme.colors.accentLight }]}>
           {FILTER_OPTIONS.map((option) => (
             <TouchableOpacity
               key={option}
               style={[
                 styles.filterOption,
-                selectedFilter === option && styles.selectedFilter
+                selectedFilter === option && [styles.selectedFilter, { backgroundColor: theme.colors.card }]
               ]}
               onPress={() => setSelectedFilter(option)}
             >
               <Text style={[
                 styles.filterText,
-                selectedFilter === option && styles.selectedFilterText
+                { color: theme.colors.textSecondary },
+                selectedFilter === option && { color: theme.colors.accent }
               ]}>
                 {option}
               </Text>
@@ -125,30 +139,36 @@ const UsageDetailsScreen = ({ navigation }) => {
         </View>
         
         <View style={styles.totalSection}>
-          <Text style={styles.totalLabel}>Total Screen Time</Text>
-          <Text style={styles.totalTime}>{getTotalScreenTime()} hours</Text>
+          <Text style={[styles.totalLabel, { color: theme.colors.textSecondary }]}>Total Screen Time</Text>
+          <Text style={[styles.totalTime, { color: theme.colors.text }]}>{getTotalScreenTime()} hours</Text>
         </View>
         
-        <View style={styles.chartCard}>
-          <Text style={styles.cardTitle}>
+        <View style={[styles.chartCard, { 
+          backgroundColor: theme.colors.card,
+          shadowColor: theme.colors.shadow
+        }]}>
+          <Text style={[styles.cardTitle, { color: theme.colors.text }]}>
             Screen Time ({selectedFilter})
           </Text>
           <UsageChart data={usageData} />
         </View>
         
-        <View style={styles.appsCard}>
-          <Text style={styles.cardTitle}>
+        <View style={[styles.appsCard, { 
+          backgroundColor: theme.colors.card,
+          shadowColor: theme.colors.shadow
+        }]}>
+          <Text style={[styles.cardTitle, { color: theme.colors.text }]}>
             App Usage Breakdown
           </Text>
-          <Text style={styles.cardSubtitle}>
+          <Text style={[styles.cardSubtitle, { color: theme.colors.textTertiary }]}>
             Total time spent on each app
           </Text>
           <AppUsageList apps={appList} />
         </View>
         
         <TouchableOpacity style={styles.exportButton}>
-          <Icon name="export-variant" size={20} color="#5A78FF" />
-          <Text style={styles.exportText}>Export Usage Data</Text>
+          <Icon name="export-variant" size={20} color={theme.colors.accent} />
+          <Text style={[styles.exportText, { color: theme.colors.accent }]}>Export Usage Data</Text>
         </TouchableOpacity>
       </ScrollView>
       
