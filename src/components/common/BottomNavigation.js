@@ -1,8 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useTheme } from '../../context/ThemeContext';
 
 const BottomNavigation = ({ activeTab, onTabPress }) => {
+  const { theme } = useTheme();
+  
   const tabs = [
     { key: 'dashboard', label: 'Dashboard', icon: 'view-dashboard-outline' },
     { key: 'usage', label: 'Usage', icon: 'chart-timeline-variant' },
@@ -12,7 +15,10 @@ const BottomNavigation = ({ activeTab, onTabPress }) => {
   ];
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { 
+      backgroundColor: theme.colors.card,
+      borderTopColor: theme.colors.border 
+    }]}>
       {tabs.map(tab => (
         <TouchableOpacity
           key={tab.key}
@@ -23,17 +29,17 @@ const BottomNavigation = ({ activeTab, onTabPress }) => {
           <Icon
             name={tab.icon}
             size={24}
-            color={activeTab === tab.key ? '#5A78FF' : '#9E9E9E'}
+            color={activeTab === tab.key ? theme.colors.accent : theme.colors.inactiveTab}
           />
           <Text
             style={[
               styles.tabLabel,
-              { color: activeTab === tab.key ? '#5A78FF' : '#9E9E9E' }
+              { color: activeTab === tab.key ? theme.colors.accent : theme.colors.inactiveTab }
             ]}
           >
             {tab.label}
           </Text>
-          {activeTab === tab.key && <View style={styles.activeIndicator} />}
+          {activeTab === tab.key && <View style={[styles.activeIndicator, { backgroundColor: theme.colors.accent }]} />}
         </TouchableOpacity>
       ))}
     </View>
@@ -44,9 +50,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     height: 60,
-    backgroundColor: '#FFFFFF',
     borderTopWidth: 1,
-    borderTopColor: '#F0F0F0',
     elevation: 8,
     shadowColor: '#000',
     shadowOffset: {
@@ -72,7 +76,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: 32,
     height: 3,
-    backgroundColor: '#5A78FF',
     borderTopLeftRadius: 3,
     borderTopRightRadius: 3,
   },

@@ -16,8 +16,10 @@ import AppUsageList from '../components/usage/AppUsageList';
 import DailyUsageSummary from '../components/usage/DailyUsageSummary';
 import GoalProgress from '../components/goals/GoalProgress';
 import BottomNavigation from '../components/common/BottomNavigation';
+import { useTheme } from '../context/ThemeContext';
 
 const DashboardScreen = ({ navigation }) => {
+  const { theme } = useTheme();
   const [totalUsage, setTotalUsage] = useState(0);
   const [usageData, setUsageData] = useState([]);
   const [topApps, setTopApps] = useState([]);
@@ -67,13 +69,16 @@ const DashboardScreen = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <StatusBar backgroundColor={theme.colors.card} barStyle={theme.colors.statusBar} />
       
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Digital Wellbeing</Text>
+      <View style={[styles.header, { 
+        backgroundColor: theme.colors.card,
+        borderBottomColor: theme.colors.border
+      }]}>
+        <Text style={[styles.headerTitle, { color: theme.colors.text }]}>Digital Wellbeing</Text>
         <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
-          <Icon name="cog" size={24} color="#555" />
+          <Icon name="cog" size={24} color={theme.colors.text} />
         </TouchableOpacity>
       </View>
 
@@ -90,33 +95,42 @@ const DashboardScreen = ({ navigation }) => {
         />
         
         {/* Weekly Usage Chart */}
-        <View style={styles.card}>
+        <View style={[styles.card, { 
+          backgroundColor: theme.colors.card,
+          shadowColor: theme.colors.shadow
+        }]}>
           <View style={styles.cardHeader}>
-            <Text style={styles.cardTitle}>Weekly Usage</Text>
+            <Text style={[styles.cardTitle, { color: theme.colors.text }]}>Weekly Usage</Text>
             <TouchableOpacity onPress={() => navigateTo('UsageDetails')}>
-              <Text style={styles.seeAllText}>See Details</Text>
+              <Text style={[styles.seeAllText, { color: theme.colors.accent }]}>See Details</Text>
             </TouchableOpacity>
           </View>
           <UsageChart data={usageData} />
         </View>
         
         {/* Top Apps */}
-        <View style={styles.card}>
+        <View style={[styles.card, { 
+          backgroundColor: theme.colors.card,
+          shadowColor: theme.colors.shadow
+        }]}>
           <View style={styles.cardHeader}>
-            <Text style={styles.cardTitle}>Most Used Apps</Text>
+            <Text style={[styles.cardTitle, { color: theme.colors.text }]}>Most Used Apps</Text>
             <TouchableOpacity onPress={() => navigateTo('UsageDetails')}>
-              <Text style={styles.seeAllText}>See All</Text>
+              <Text style={[styles.seeAllText, { color: theme.colors.accent }]}>See All</Text>
             </TouchableOpacity>
           </View>
           <AppUsageList apps={topApps} />
         </View>
         
         {/* Goal Progress */}
-        <View style={styles.card}>
+        <View style={[styles.card, { 
+          backgroundColor: theme.colors.card,
+          shadowColor: theme.colors.shadow
+        }]}>
           <View style={styles.cardHeader}>
-            <Text style={styles.cardTitle}>Your Goals</Text>
+            <Text style={[styles.cardTitle, { color: theme.colors.text }]}>Your Goals</Text>
             <TouchableOpacity onPress={() => navigateTo('Goals')}>
-              <Text style={styles.seeAllText}>Manage</Text>
+              <Text style={[styles.seeAllText, { color: theme.colors.accent }]}>Manage</Text>
             </TouchableOpacity>
           </View>
           <GoalProgress 
@@ -152,7 +166,6 @@ const DashboardScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f7',
   },
   header: {
     flexDirection: 'row',
@@ -160,14 +173,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 15,
-    backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0',
   },
   headerTitle: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#333',
   },
   scrollView: {
     flex: 1,
@@ -176,12 +186,10 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   card: {
-    backgroundColor: '#fff',
     borderRadius: 15,
     padding: 16,
     marginHorizontal: 20,
     marginBottom: 20,
-    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -199,12 +207,10 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#333',
   },
   seeAllText: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#007AFF',
   },
   focusModeCard: {
     flexDirection: 'row',
