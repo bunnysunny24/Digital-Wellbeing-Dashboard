@@ -1,104 +1,49 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import Svg, { Path, Circle, Line, Text as SvgText } from 'react-native-svg';
-
-const { width } = Dimensions.get('window');
-const CHART_WIDTH = width - 80;
-const CHART_HEIGHT = 180;
-const PADDING = 20;
 
 const UsageChart = ({ data }) => {
-  // Calculate max for scaling
-  const maxHours = Math.max(...data.map(item => item.hours)) + 1;
-  
-  // Generate points for path
-  const points = data.map((item, index) => {
-    const x = (index / (data.length - 1)) * (CHART_WIDTH - PADDING * 2) + PADDING;
-    const y = CHART_HEIGHT - PADDING - ((item.hours / maxHours) * (CHART_HEIGHT - PADDING * 2));
-    return { x, y };
-  });
-  
-  // Generate SVG path
-  const linePath = points
-    .map((point, index) => `${index === 0 ? 'M' : 'L'} ${point.x} ${point.y}`)
-    .join(' ');
-    
-  // Create gradient path (area under the line)
-  const gradientPath = `${linePath} L ${points[points.length - 1].x} ${CHART_HEIGHT - PADDING} L ${points[0].x} ${CHART_HEIGHT - PADDING} Z`;
+  // Find the maximum value for scaling
+  const maxHours = Math.max(...data.map(item => item.hours)) * 1.2; // Add 20% padding to top
   
   return (
     <View style={styles.container}>
-      <Svg width={CHART_WIDTH} height={CHART_HEIGHT}>
-        {/* Horizontal grid lines */}
-        {[...Array(5)].map((_, i) => {
-          const y = PADDING + (i * (CHART_HEIGHT - PADDING * 2) / 4);
-          return (
-            <Line
-              key={i}
-              x1={PADDING}
-              y1={y}
-              x2={CHART_WIDTH - PADDING}
-              y2={y}
-              stroke="#E0E0E0"
-              strokeWidth="1"
-              strokeDasharray="5,5"
-            />
-          );
-        })}
-        
+      <View style={styles.chartContainer}>
         {/* Y-axis labels */}
-        {[...Array(5)].map((_, i) => {
-          const y = PADDING + (i * (CHART_HEIGHT - PADDING * 2) / 4);
-          const value = Math.round((maxHours - (i * maxHours / 4)) * 10) / 10;
-          return (
-            <SvgText
-              key={i}
-              x={PADDING - 10}
-              y={y + 5}
-              fontSize="10"
-              fill="#9E9E9E"
-              textAnchor="end"
-            >
-              {value}h
-            </SvgText>
-          );
-        })}
+        <View style={styles.yAxis}>
+          {[...Array(5)].map((_, i) => {
+            const value = maxHours * ((4 - i) / 4);
+            return (
+              <Text key={i} style={styles.axisLabel}>
+                {value.toFixed(1)}h
+              </Text>
+            );
+          })}
+        </View>
         
-        {/* Area under line with gradient */}
-        <Path
-          d={gradientPath}
-          fill="rgba(90, 120, 255, 0.1)"
-        />
-        
-        {/* Line chart */}
-        <Path
-          d={linePath}
-          fill="none"
-          stroke="#5A78FF"
-          strokeWidth="3"
-        />
-        
-        {/* Data points */}
-        {points.map((point, index) => (
-          <Circle
-            key={index}
-            cx={point.x}
-            cy={point.y}
-            r={5}
-            fill="#FFF"
-            stroke="#5A78FF"
-            strokeWidth="2"
-          />
-        ))}
-      </Svg>
-      
-      {/* X-axis labels */}
-      <View style={styles.xAxisLabels}>
-        {data.map((item, index) => (
-          <Text key={index} style={styles.xLabel}>
-            {item.day}
-          </Text>
-        ))}
+        {/* Bars */}
+        <View style={styles.barsContainer}>
+          {data.map((item, index) => {
+            // Calculate height as percentage of container
+            const heightPercentage = (item.hours / maxHours) * 100;
+            
+            return (
+              <View key={index} style={styles.barColumn}>
+                <View style={styles.barLabelContainer}>
+                  <View 
+                    style={[
+                      styles.bar, 
+                      { 
+                        height: `${heightPercentage}%`,
+                        backgroundColor: item.hours > maxHours * 0.7 ? '#FF6B6B' : '#5A78FF' 
+                      }
+                    ]}
+                  />
+                </View>
+                <Text style={styles.barLabel}>{item.day}</Text>
+              </View>
+            );
+          })}
+        </View>
       </View>
     </View>
   );
@@ -106,20 +51,54 @@ const UsageChart = ({ data }) => {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    marginVertical: 10,
+    height: 200,
+    marginTop: 10,
+    marginBottom: 10,
   },
-  xAxisLabels: {
+  chartContainer: {
+    flex: 1,
     flexDirection: 'row',
-    width: CHART_WIDTH - PADDING * 2,
-    justifyContent: 'space-between',
-    paddingHorizontal: PADDING,
   },
-  xLabel: {
-    color: '#9E9E9E',
+  yAxis: {
+    width: 40,
+    height: '100%',
+    justifyContent: 'space-between',
+    paddingVertical: 5,
+  },
+  axisLabel: {
     fontSize: 12,
-    fontWeight: '500',
-    textAlign: 'center',
+    color: '#888',
+    textAlign: 'right',
+    paddingRight: 5,
+  },
+  barsContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'flex-end',
+    paddingLeft: 10,
+  },
+  barColumn: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  barLabelContainer: {
+    height: '85%', // Leave room for the label beneath
+    width: '100%',
+    justifyContent: 'flex-end',
+  },
+  bar: {
+    width: '60%',
+    minWidth: 20,
+    maxWidth: 35,
+    alignSelf: 'center',
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4,
+  },
+  barLabel: {
+    fontSize: 12,
+    color: '#555',
+    marginTop: 5,
   },
 });
 
