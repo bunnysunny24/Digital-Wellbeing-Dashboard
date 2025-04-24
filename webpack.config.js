@@ -62,7 +62,8 @@ module.exports = {
       'crypto': require.resolve('crypto-browserify'),
       'stream': require.resolve('stream-browserify'),
       'os': require.resolve('os-browserify/browser'),
-      'process': require.resolve('process/browser')
+      'process': require.resolve('process/browser'),
+      'util': require.resolve('util/')
     }
   },
   plugins: [
@@ -75,14 +76,14 @@ module.exports = {
       filename: 'index.html',
       inject: true,
     }),
-    // Add ProvidePlugin to provide CommonJS globals
     new webpack.ProvidePlugin({
       process: 'process/browser',
       Buffer: ['buffer', 'Buffer'],
-      exports: 'exports-loader?type=commonjs&exports=module.exports',
-      module: 'module-loader?type=commonjs',
     }),
   ],
+  optimization: {
+    minimize: false // Disable minification completely to avoid Terser issues
+  },
   devServer: {
     static: {
       directory: path.join(__dirname, 'web'),
