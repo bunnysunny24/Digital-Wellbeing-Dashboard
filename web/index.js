@@ -3,9 +3,8 @@ import React from 'react';
 import App from '../App';
 import { name as appName } from '../app.json';
 
-// Create a web-specific navigation wrapper
+// Create a web-specific wrapper
 const WebApp = () => {
-  // Include any web-specific setup here
   return <App />;
 };
 
@@ -16,3 +15,8 @@ AppRegistry.registerComponent(appName, () => WebApp);
 AppRegistry.runApplication(appName, {
   rootTag: document.getElementById('root')
 });
+
+// Handle browser history integration for navigation
+if (module.hot) {
+  module.hot.accept();
+}
