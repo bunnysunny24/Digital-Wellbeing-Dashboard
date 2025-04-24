@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+  mode: 'development',
   entry: {
     index: './web/index.js',
   },
@@ -53,12 +54,13 @@ module.exports = {
     alias: {
       'react-native$': 'react-native-web',
       'react-native-vector-icons': 'react-native-vector-icons/dist',
+      '@react-native-async-storage/async-storage': path.resolve(__dirname, 'web/AsyncStorageWeb.js'),
     },
   },
   plugins: [
     new webpack.DefinePlugin({
-      __DEV__: process.env.NODE_ENV !== 'production',
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+      __DEV__: true,
+      'process.env.NODE_ENV': JSON.stringify('development'),
     }),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'web/index.html'),
@@ -72,7 +74,7 @@ module.exports = {
     },
     historyApiFallback: true,
     port: 8080,
-    host: '0.0.0.0', // Allow access from other devices on network
+    host: '0.0.0.0',
     open: true,
     hot: true,
   },

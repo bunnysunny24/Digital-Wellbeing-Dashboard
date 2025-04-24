@@ -8,8 +8,8 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "web": "webpack serve --mode=development",
-    "build-web": "webpack --mode=production"
+    "web": "webpack-dev-server --config webpack.config.js",
+    "build-web": "webpack --config webpack.config.js --mode=production"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.1.2",
