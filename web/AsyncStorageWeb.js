@@ -4,7 +4,7 @@
 const AsyncStorage = {
   setItem: (key, value) => {
     try {
-      localStorage.setItem(key, value);
+      localStorage.setItem(key, typeof value === 'string' ? value : JSON.stringify(value));
       return Promise.resolve(true);
     } catch (error) {
       return Promise.reject(error);
@@ -71,7 +71,7 @@ const AsyncStorage = {
   multiSet: (keyValuePairs) => {
     try {
       keyValuePairs.forEach(([key, value]) => {
-        localStorage.setItem(key, value);
+        localStorage.setItem(key, typeof value === 'string' ? value : JSON.stringify(value));
       });
       return Promise.resolve();
     } catch (error) {

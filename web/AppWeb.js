@@ -1,8 +1,8 @@
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { ThemeProvider } from '../src/context/ThemeContext';
+import { WebNavigationWrapper } from './NavigationWrapper';
 
 // Import screens
 import DashboardScreen from '../src/screens/DashboardScreen';
@@ -18,7 +18,7 @@ const AppWeb = () => {
   return (
     <SafeAreaProvider>
       <ThemeProvider>
-        <NavigationContainer>
+        <WebNavigationWrapper>
           <Stack.Navigator
             initialRouteName="Dashboard"
             screenOptions={{
@@ -32,7 +32,7 @@ const AppWeb = () => {
             <Stack.Screen name="FocusMode" component={FocusModeScreen} />
             <Stack.Screen name="Settings" component={SettingsScreen} />
           </Stack.Navigator>
-        </NavigationContainer>
+        </WebNavigationWrapper>
       </ThemeProvider>
     </SafeAreaProvider>
   );
