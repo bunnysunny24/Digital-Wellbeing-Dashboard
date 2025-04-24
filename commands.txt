@@ -1,0 +1,1 @@
+npx @react-native-community/cli init MyNewApp - for init
