@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { ThemeProvider } from './src/context/ThemeContext';
 
 // Import screens
 import DashboardScreen from './src/screens/DashboardScreen';
@@ -13,21 +14,23 @@ const Stack = createStackNavigator();
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Dashboard"
-        screenOptions={{
-          headerShown: false,
-          cardStyle: { backgroundColor: '#F5F5F7' }
-        }}
-      >
-        <Stack.Screen name="Dashboard" component={DashboardScreen} />
-        <Stack.Screen name="UsageDetails" component={UsageDetailsScreen} />
-        <Stack.Screen name="Goals" component={GoalsScreen} />
-        <Stack.Screen name="FocusMode" component={FocusModeScreen} />
-        <Stack.Screen name="Settings" component={SettingsScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <ThemeProvider>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="Dashboard"
+          screenOptions={{
+            headerShown: false,
+            cardStyle: { backgroundColor: '#F5F5F7' }
+          }}
+        >
+          <Stack.Screen name="Dashboard" component={DashboardScreen} />
+          <Stack.Screen name="UsageDetails" component={UsageDetailsScreen} />
+          <Stack.Screen name="Goals" component={GoalsScreen} />
+          <Stack.Screen name="FocusMode" component={FocusModeScreen} />
+          <Stack.Screen name="Settings" component={SettingsScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ThemeProvider>
   );
 };
 
