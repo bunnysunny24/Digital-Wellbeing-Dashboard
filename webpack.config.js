@@ -9,7 +9,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'web/dist'),
-    publicPath: process.env.NODE_ENV === 'production' ? '/digital-wellbeing-app/' : '/',
+    publicPath: process.env.NODE_ENV === 'production' ? '/React_native/' : '/',
     filename: '[name].bundle.js',
   },
   module: {

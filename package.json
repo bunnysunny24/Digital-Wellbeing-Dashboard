@@ -2,7 +2,7 @@
   "name": "MyNewApp",
   "version": "0.0.1",
   "private": true,
-  "homepage": "https://bunnysunny24s.github.io/digital-wellbeing-app",
+  "homepage": "https://bunnysunny24.github.io/React_native",
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
