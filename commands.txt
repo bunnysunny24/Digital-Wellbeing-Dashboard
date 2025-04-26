@@ -1,3 +1,4 @@
 npx @react-native-community/cli init MyNewApp - for init
 npx react-native start -  javascript bundle
 npx react-native run-android -  to run on android
+cd MyNewApp/android ; ./gradlew assembleRelea
