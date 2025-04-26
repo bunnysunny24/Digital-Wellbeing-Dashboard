@@ -84,11 +84,15 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+        }
     }
 
     project.ext.react = [
         bundleInRelease: true,
-        enableHermes: true
+        enableHermes: true,
+        bundleCommand: "ram-bundle"
     ]
 
     signingConfigs {
@@ -113,6 +117,9 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            
+            // Enable the bundling of JS and assets in release mode
+            bundleInRelease true
         }
     }
 }
