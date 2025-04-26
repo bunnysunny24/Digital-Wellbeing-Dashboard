@@ -74,7 +74,8 @@ export const ThemeProvider = ({ children }) => {
           setThemeMode(settings.themeMode);
         }
       } catch (error) {
-        console.error('Failed to load theme settings:', error);
+        console.log('Theme settings load failed, using defaults');
+        // Continue with default theme
       }
     };
     
