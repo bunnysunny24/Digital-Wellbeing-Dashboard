@@ -5,12 +5,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: {
-    index: ['./web/polyfills.js', './web/index.js'], // Include polyfills before main code
+    index: './web/index.js',
   },
   output: {
     path: path.resolve(__dirname, 'web/dist'),
-    publicPath: '',  // Empty string for relative paths from HTML file
-    filename: '[name].bundle.js',
+    publicPath: '/',
+    filename: '[name].[contenthash].bundle.js',
   },
   module: {
     rules: [
@@ -62,14 +62,16 @@ module.exports = {
       'crypto': require.resolve('crypto-browserify'),
       'stream': require.resolve('stream-browserify'),
       'os': require.resolve('os-browserify/browser'),
-      'process': require.resolve('process/browser'),
-      'util': require.resolve('util/')
+      'process': require.resolve('process/browser')
     }
   },
   plugins: [
     new webpack.DefinePlugin({
       __DEV__: process.env.NODE_ENV !== 'production',
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+      'exports': '(typeof window !== "undefined" ? window : {})',
+      'global': {},
+      'module': {},
     }),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'web/index.html'),
@@ -79,11 +81,9 @@ module.exports = {
     new webpack.ProvidePlugin({
       process: 'process/browser',
       Buffer: ['buffer', 'Buffer'],
+      exports: 'exports-loader?exports=module.exports',
     }),
   ],
-  optimization: {
-    minimize: false // Disable minification completely to avoid Terser issues
-  },
   devServer: {
     static: {
       directory: path.join(__dirname, 'web'),

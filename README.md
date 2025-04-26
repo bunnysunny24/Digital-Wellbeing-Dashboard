@@ -1,97 +1,118 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Digital Wellbeing Dashboard
 
-# Getting Started
+![Last Updated](https://img.shields.io/badge/Last%20Updated-April%202025-brightgreen)
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## Overview
 
-## Step 1: Start Metro
+The Digital Wellbeing Dashboard is a React Native application designed to help users track and manage their digital habits. By providing visual insights into app usage patterns and offering tools to set healthy boundaries, this app empowers users to develop a more balanced relationship with technology.
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## Features
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+### 📊 Usage Visualization
+- Daily and weekly screen time tracking
+- App usage breakdown by category
+- Usage pattern analysis
+- Interactive charts and graphs
 
-```sh
-# Using npm
+### 🎯 Goal Setting
+- Create daily screen time limits
+- Set app-specific usage goals
+- Track progress with visual indicators
+- Receive achievement notifications
+
+### ⏱️ Focus Mode Scheduling
+- Schedule distraction-free time periods
+- Customize allowed notifications and apps
+- Integration with device's Do Not Disturb functionality
+- Focus session statistics
+
+## Screenshots
+
+<div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+  <img src="https://github.com/user-attachments/assets/793ca030-71d0-4b20-9b4f-6080b27de749" width="300" alt="Dashboard View 1">
+  
+  <img src="https://github.com/user-attachments/assets/0edca269-62a0-4a5c-a6c5-ab6cc207de15" width="300" alt="Dashboard View 2">
+  
+  <img src="https://github.com/user-attachments/assets/7d8a08ec-5846-4ba0-b35e-03ba5e59f0ce" width="300" alt="Usage Stats">
+  
+  <img src="https://github.com/user-attachments/assets/3c970125-471a-449e-8c55-4a9e64c6bfd7" width="300" alt="App Categories">
+  
+  <img src="https://github.com/user-attachments/assets/2f862f28-8dd0-4bda-b168-6810d1a44bf6" width="300" alt="Goal Setting Interface">
+  
+  <img src="https://github.com/user-attachments/assets/9afff9fa-04fa-4f8c-a3d3-7138d7914f0a" width="300" alt="Progress Tracking">
+  
+  <img src="https://github.com/user-attachments/assets/45554752-2d88-45bf-be2c-896867762afe" width="300" alt="Focus Mode Settings">
+  
+  <img src="https://github.com/user-attachments/assets/14f8b2b7-c85f-431a-b752-38082686cea8" width="300" alt="Notification Management">
+  
+  <img src="https://github.com/user-attachments/assets/d5d4889f-bffa-4213-9c8b-af66daa892ec" width="300" alt="Session Timer">
+  
+  <img src="https://github.com/user-attachments/assets/dc788cd1-bd93-4e1f-81f9-53ba22b6c244" width="300" alt="Analytics Dashboard">
+  
+  <img src="https://github.com/user-attachments/assets/8be45bf6-2a53-4146-925e-108e59cda591" width="300" alt="User Profile">
+  
+  <img src="https://github.com/user-attachments/assets/ff7a986e-58ab-4a39-94e4-7cc58605c578" width="300" alt="Settings Screen">
+  
+  <img src="https://github.com/user-attachments/assets/eca53484-65cc-4cf8-b491-cce36649f2a7" width="300" alt="App Details">
+  
+  <img src="https://github.com/user-attachments/assets/2c5661f3-a0cc-4ae3-b795-5313143fa776" width="300" alt="Achievements">
+  
+  <img src="https://github.com/user-attachments/assets/55019bab-2b97-43b5-91f4-408da8b924ee" width="300" alt="Weekly Report">
+</div>
+
+## Impact
+
+- Helps users become aware of their digital consumption habits
+- Encourages mindful technology use through visual feedback
+- Reduces digital overload and screen fatigue
+- Promotes better productivity and mental wellbeing
+
+## Technology Stack
+
+- **Frontend**: React Native
+- **State Management**: Redux / Context API
+- **Data Visualization**: React Native SVG, Victory Charts
+- **Storage**: AsyncStorage for local data persistence
+- **UI Components**: Custom components with Reanimated for animations
+
+## Technical Implementation
+
+### Data Visualization
+- Custom chart components for usage statistics
+- Interactive graphs with touch gestures
+- Color-coded indicators for goal progress
+
+### Notification Settings UI
+- Permission management interface
+- Priority levels configuration
+- Custom notification scheduling
+
+### Timer Interfaces
+- Focus session countdown timers
+- Usage limit notifications
+- Screen time tracking
+
+## Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/bunnysunny24/React_native.git
+
+# Navigate to project directory
+cd React_native
+
+# Install dependencies
+npm install
+# or
+yarn install
+
+# Start the development server
 npm start
+# or
+npx react-native start
 
-# OR using Yarn
-yarn start
-```
+# Run on Android
+npx react-native run-android
 
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
-
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
-
-## Step 3: Modify your app
-
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+# Run on iOS
+npx react-native run-ios
