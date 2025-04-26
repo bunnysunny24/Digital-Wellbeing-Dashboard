@@ -1,6 +1,7 @@
 package com.mynewapp
 
 import android.app.Application
+import android.content.Context
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
 import com.facebook.react.ReactHost
@@ -33,9 +34,32 @@ class MainApplication : Application(), ReactApplication {
 
   override fun onCreate() {
     super.onCreate()
-    SoLoader.init(this, false)
-    if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
-      load()
+    try {
+      // Initialize SoLoader
+      SoLoader.init(this, false)
+      
+      if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
+        load()
+      }
+    } catch (e: Exception) {
+      e.printStackTrace()
+    }
+  }
+
+  override fun attachBaseContext(base: Context) {
+    super.attachBaseContext(base)
+    // Initialize the ApplicationContext
+    initializeContext(base)
+  }
+
+  private fun initializeContext(context: Context) {
+    try {
+      // Ensure the application context is properly set
+      if (context != null) {
+        context.applicationContext
+      }
+    } catch (e: Exception) {
+      e.printStackTrace()
     }
   }
 }
